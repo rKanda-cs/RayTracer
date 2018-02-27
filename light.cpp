@@ -18,8 +18,17 @@ Vec3d DirectionalLight::shadowAttenuation( const Vec3d& P ) const
     // YOUR CODE HERE:
     // You should implement shadow-handling code here.
 
-    return Vec3d(1,1,1);
+    //return Vec3d(1,1,1);
+																//**** 追加箇所(第2回 影による減衰1) ****//
+	Vec3d d = getDirection(P);	// 光源への方向ベクトルをとる
+	d.normalize();
+	ray r(P, d, ray::SHADOW);	// Pからdへ進む、影の判定用のRayを生成
+	isect i;			// 交点情報を保存するためのオブジェクトを生成
 
+	if (getScene()->intersect(r, i)) 	// Rayがシーン上の何らかのオブジェクトと衝突するか判定
+		return Vec3d(0.0, 0.0, 0.0);	// 衝突するなら0を返す
+	else
+		return Vec3d(1.0, 1.0, 1.0);	// 衝突しなければ1を返す
 }
 
 Vec3d DirectionalLight::getColor( const Vec3d& P ) const
@@ -41,8 +50,18 @@ double PointLight::distanceAttenuation( const Vec3d& P ) const
 	// You'll need to modify this method to attenuate the intensity 
 	// of the light based on the distance between the source and the 
 	// point P.  For now, we assume no attenuation and just return 1.0
-	return 1.0;
+	//return 1.0;
+																			//**** 追加箇所(第2回 距離による減衰) ****//
+	Vec3d dv = this->position - P;	// 点光源の位置ベクトルと交点の位置ベクトルの差をとる
+	double d = dv.length();	// 上のベクトルのサイズをとって光源からの距離を計算
+	double f = 1.0 / (constantTerm + linearTerm*d + quadraticTerm*d*d);
 
+	if (f > 1.0)
+		f = 1.0;
+	else if (f <= 0.0)
+		f = 0.0;
+
+	return f;
 }
 
 Vec3d PointLight::getColor( const Vec3d& P ) const
@@ -64,6 +83,24 @@ Vec3d PointLight::shadowAttenuation(const Vec3d& P) const
     // YOUR CODE HERE:
     // You should implement shadow-handling code here.
 
-    return Vec3d(1,1,1);
+    //return Vec3d(1,1,1);
+																//**** 追加箇所(第2回 影による減衰2) ****//
+	Vec3d d = getDirection(P);	// 光源への方向ベクトルをとる
+	d.normalize();
+	ray r(P, d, ray::SHADOW);	// Pからdへ進む、影の判定用のRayを生成
+	isect i;			// 交点情報を保存するためのオブジェクトを生成
+	Vec3d dv = position - P;	// 光源の位置ベクトルと交点の位置ベクトルの差をとる
+	double dist = dv.length();
 
+	/* Rayの交差判定によって返り値を決めよう */				//Super_hintスライドより
+	if (getScene()->intersect(r, i)) // Rayがシーン上の何らかのオブジェクトと衝突するか判定
+	{
+		Vec3d dv1 = r.at(i.t) - P;  //衝突オブジェクトとの距離が, distよりも長い->光源の後ろで衝突するので遮られない
+		if (dv1.length() > dist)
+			return Vec3d(1.0, 1.0, 1.0);
+		else
+			return Vec3d(0.0, 0.0, 0.0);// 衝突するなら0を返す
+	}
+	else
+		return Vec3d(1.0, 1.0, 1.0);// 衝突しなければ1を返す
 }

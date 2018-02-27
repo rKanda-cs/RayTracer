@@ -39,8 +39,40 @@ Vec3d Material::shade( Scene *scene, const ray& r, const isect& i ) const
 	// 		.
 	// }
 
+																				//**** 追加箇所 ****//
+	Vec3d lum = ke(i) + prod(ka(i), scene->ambient());	  // 返り値
+	Vec3d v = -r.getDirection();	// 視線ベクトルはRayの方向ベクトルdと等しい
 
-	return kd(i);
+	for (vector<Light*>::const_iterator litr = scene->beginLights();
+		litr != scene->endLights(); litr++) {	// 全ての光源に関してループ
+		Light* pLight = *litr;		// このループで注目する光源をpLightとする
+		Vec3d ld = pLight->getDirection(r.at(i.t));
+		ld.normalize();
+
+		Vec3d lc = pLight->getColor(r.at(i.t));	// pLightから出る光の量
+		Vec3d atten;		// 減衰率. 後のためにベクトル型にしておこう
+		//atten = pLight->distanceAttenuation(r.at(i.t)) * Vec3d(1.0, 1.0, 1.0);
+		atten = pLight->distanceAttenuation(r.at(i.t)) * pLight->shadowAttenuation(r.at(i.t));	// 影による減衰(第2回演習にて変更)
+		
+		// diffuse color
+		Vec3d ldf;		// 光源から反射する拡散光の値
+		/* ldfの値を自分で計算しよう */
+		ldf = kd(i)*max(0, i.N*ld);		//0かi.N*ldの大きい方 を返す
+
+		// specular color
+		Vec3d lsp;		// 光源から反射する鏡面光の値
+		/* lspの値を自分で計算しよう */
+		Vec3d R = ld + 2 * ((i.N*ld)*i.N - ld);
+
+		Vec3d V = -r.getDirection();
+		double ns = shininess(i);
+		lsp = ks(i)*pow(max(0, R*V), ns);       //pow(a,b)  : aのb乗を返す
+
+		lum += prod(atten, prod(lc, ldf + lsp));
+	}
+	return lum;
+
+//	return kd(i);
 
 }
 
@@ -73,8 +105,8 @@ Vec3d TextureMap::getMappedValue( const Vec2d& coord ) const
 
 
 
-    return Vec3d(1.0, 1.0, 1.0);
-
+    //return Vec3d(1.0, 1.0, 1.0);
+	return getPixelAt(coord[0] * width, coord[1] * height);			//**** 追加箇所(テクスチャオプション) ****//
 }
 
 
