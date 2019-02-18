@@ -16,6 +16,7 @@ class ray;
 class isect;
 
 using std::string;
+using namespace std;
 
 /* The TextureMap class can be used to store a texture map,
    which consists of a Image and various accessors to
@@ -166,7 +167,10 @@ public:
         , _kr( Vec3d( 0.0, 0.0, 0.0 ) )
         , _kt( Vec3d( 0.0, 0.0, 0.0 ) )
         , _shininess( 0.0 ) 
-		, _index(1.0) {}
+		, _index(1.0) {
+	
+		color = cuticleShade2_set();		// Hairレンダリング時のデータ読み込み
+	}
 
     Material( const Vec3d& e, const Vec3d& a, const Vec3d& s, 
               const Vec3d& d, const Vec3d& r, const Vec3d& t, double sh, double in)
@@ -174,8 +178,13 @@ public:
           _shininess( Vec3d(sh,sh,sh) ), _index( Vec3d(in,in,in) ) {}
 
 	virtual Vec3d shade( Scene *scene, const ray& r, const isect& i ) const;
-
-
+	Vec3d cuticleShade1(Vec3d L, Vec3d N) const;
+	Vec3d cuticleShade2(Vec3d L, Vec3d N, Vec3d V) const;
+	Vec3d cuticleShade2(Vec3d L, Vec3d N, Vec3d V, Vec3d* c) const;
+	Vec3d cuticleShade2_inf(Vec3d L, Vec3d N, Vec3d V, Vec3d* c) const;
+	Vec3d ellipseShade2(Vec3d L, Vec3d N, Vec3d V, Vec3d* c) const;
+	Vec3d* cuticleShade2_set() const;
+	Vec3d* color;
     
     Material &
     operator+=( const Material &m )

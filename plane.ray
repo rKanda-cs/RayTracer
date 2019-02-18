@@ -1,0 +1,113 @@
+SBT-raytracer 1.0
+
+camera {
+	position = (0,0,-6);	// 0deg
+	viewdir = (0,0,1);
+	updir = (0,1,0);
+
+/*	position = (0, 1.553, -5.796);	// 15deg
+	viewdir = (0, -0.259, 0.966);
+	updir = (0, 0.966, 0.259);
+*/
+/*	position = (0, 3, -5.196);	// 30deg
+	viewdir = (0, -0.5, 0.866);
+	updir = (0, 0.866, 0.5);
+*/
+/*	position = (0, 4.243, -4.243);	// 45deg
+	viewdir = (0, -0.71, 0.71);
+	updir = (0, 0.71, 0.71);
+*/	
+/*	position = (0, 5.196, -3);	// 60deg
+	viewdir = (0, -0.866, 0.5);
+	updir = (0, 0.5, 0.866);
+*/
+/*	position = (0, 5.796, -1.553);	// 75deg
+	viewdir = (0, -0.966, 0.259);
+	updir = (0, 0.259, 0.966);
+*/
+/*	position = (0, 6, 0);		// 90deg
+	viewdir = (0, -1, 0);
+	updir = (0, 0, 1);
+*/
+	aspectratio = 1;
+	
+}
+
+ambient_light {
+	color = (1.0, 1.0, 1.0);
+}
+
+
+directional_light {
+	direction = (0, -1, 0);
+	colour = (1.0, 1.0, 1.0);
+}
+
+
+//rotate(1, 0, 0, 0.0  ,		// 0deg(side)
+//rotate(1, 0, 0, 0.2616,		// 15deg
+//rotate(1, 0, 0, 0.523,		// 30deg
+rotate(1, 0, 0, 0.785,		// 45deg
+//rotate(1, 0, 0, 1.046,		// 60deg
+//rotate(1, 0, 0, 1.3083,		// 75deg
+//rotate(1, 0, 0, 1.57,			// 90deg(top)
+scale(3,3,1,
+square{
+	material = {
+		diffuse = (0,0,0);
+//		specular = (0.5,0.5,0.5);
+		specular = (1.0,1.0,1.0);
+		shininess = 0.5;
+	}
+}));
+
+translate(0, 5, 0,
+rotate(1, 0, 0, 1.57,
+scale(0.01, 0.01, 10,
+cylinder{ 
+	material = { 
+		diffuse = (1,0,0);
+		reflective = (100,0,0);
+	}
+})));
+
+
+/*
+rotate(1, 0, 0, 1.3083,
+translate(0, 0, -5,
+scale(0.01, 0.01, 10,
+cylinder{ 
+	material = { 
+		diffuse = (0,0,1);
+		reflective = (0,0,100);
+	}
+})));
+*/
+
+rotate(1,0,0,1.0,
+translate(0,0,25,
+scale(500,800,1,
+square{
+	material = {
+		diffuse = (1,1,1);
+	}
+})));
+
+
+rotate(0,1,0,1.57,
+translate(0,0,25,
+scale(50,50,1,
+square{
+	material = {
+		diffuse = (1,1,1);
+	}
+})));
+
+rotate(0,-1,0,1.57,
+translate(0,0,25,
+scale(50,50,1,
+square{
+	material = {
+		diffuse = (1,1,1);
+	}
+})));

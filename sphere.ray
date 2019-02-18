@@ -1,0 +1,155 @@
+SBT-raytracer 1.0
+
+camera {
+	position = (0,0,-6);	// 0deg
+	viewdir = (0,0,1);
+	updir = (0,1,0);
+
+/*	position = (0, 0.523, -5.977);	// 5deg
+	viewdir = (0, -0.087, 0.996);
+	updir = (0, 0.996, 0.087);
+*/
+/*	position = (0, 1.042, -5.909);	// 10deg
+	viewdir = (0, -0.174, 0.985);
+	updir = (0, 0.985, 0.174);
+*/
+/*	position = (0, 1.553, -5.796);	// 15deg
+	viewdir = (0, -0.259, 0.966);
+	updir = (0, 0.966, 0.259);
+*/
+/*	position = (0, 2.052, -5.638);	// 20deg
+	viewdir = (0, -0.342, 0.94);
+	updir = (0, 0.94, 0.342);
+*/
+/*	position = (0, 2.536, -5.438);	// 25deg
+	viewdir = (0, -0.423, 0.906);
+	updir = (0, 0.906, 0.423);
+*/
+/*	position = (0, 3, -5.196);	// 30deg
+	viewdir = (0, -0.5, 0.866);
+	updir = (0, 0.866, 0.5);
+*/
+/*	position = (0, 3.441, -4.915);	// 35deg
+	viewdir = (0, -0.574, 0.819);
+	updir = (0, 0.819, 0.574);
+*/
+/*	position = (0, 3.857, -4.596);	// 40deg
+	viewdir = (0, -0.643, 0.766);
+	updir = (0, 0.766, 0.643);
+*/
+/*	position = (0, 4.243, -4.243);	// 45deg
+	viewdir = (0, -0.707, 0.707);
+	updir = (0, 0.707, 0.707);
+*/
+/*	position = (0, 4.596, -3.857);	// 50deg
+	viewdir = (0, -0.766, 0.643);
+	updir = (0, 0.643, 0.766);
+*/
+/*	position = (0, 4.915, -3.441);	// 55deg
+	viewdir = (0, -0.819, 0.574);
+	updir = (0, 0.574, 0.819);
+*/
+/*	position = (0, 5.196, -3);	// 60deg
+	viewdir = (0, -0.866, 0.5);
+	updir = (0, 0.5, 0.866);
+*/
+/*	position = (0, 5.438, -2.536);	// 65deg
+	viewdir = (0, -0.906, 0.423);
+	updir = (0, 0.423, 0.906);
+*/
+/*	position = (0, 5.638, -2.052);	// 70deg
+	viewdir = (0, -0.94, 0.342);
+	updir = (0, 0.342, 0.94);
+*/
+/*	position = (0, 5.796, -1.553);	// 75deg
+	viewdir = (0, -0.966, 0.259);
+	updir = (0, 0.259, 0.966);
+*/
+/*	position = (0, 5.909, -1.042);	// 80deg
+	viewdir = (0, -0.985, 0.174);
+	updir = (0, 0.174, 0.985);
+*/
+/*	position = (0, 5.977, -0.523);	// 85deg
+	viewdir = (0, -0.996, 0.087);
+	updir = (0, 0.087, 0.996);
+*/
+/*	position = (0, 6, 0);		// 90deg
+	viewdir = (0, -1, 0);
+	updir = (0, 0, 1);
+*/
+	aspectratio = 1;
+	
+}
+
+ambient_light {
+	color = (1.0, 1.0, 1.0);
+}
+
+
+
+directional_light {
+	direction = (0, -1, 0);
+	colour = (1.0, 1.0, 1.0);
+}
+
+
+scale(2,
+sphere{
+	material = {
+		diffuse = (0,0,0);
+//		specular = (0.5,0.5,0.5);
+		specular = (1.0,1.0,1.0);
+		shininess = 0.5;
+	}
+});
+
+translate(0, 5, 0,
+rotate(1, 0, 0, 1.57,
+scale(0.01, 0.01, 10,
+cylinder{ 
+	material = { 
+		diffuse = (1,0,0);
+		reflective = (100,0,0);
+	}
+})));
+
+
+/*
+rotate(1, 0, 0, 1.3083,
+translate(0, 0, -5,
+scale(0.01, 0.01, 10,
+cylinder{ 
+	material = { 
+		diffuse = (0,0,1);
+		reflective = (0,0,100);
+	}
+})));
+*/
+
+rotate(1,0,0,1.0,
+translate(0,0,25,
+scale(500,800,1,
+square{
+	material = {
+		diffuse = (1,1,1);
+	}
+})));
+
+
+rotate(0,1,0,1.57,
+translate(0,0,25,
+scale(50,50,1,
+square{
+	material = {
+		diffuse = (1,1,1);
+	}
+})));
+
+rotate(0,-1,0,1.57,
+translate(0,0,25,
+scale(50,50,1,
+square{
+	material = {
+		diffuse = (1,1,1);
+	}
+})));
